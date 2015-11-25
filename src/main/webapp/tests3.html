@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" language="javascript" src="jquery-1.10.2.min.js"></script>
+    <script>
+        function startRead() {
+            var file = document.getElementById('file').files[0];
+            if (file) {
+                if (file.type.match("image.*")) {
+                    getAsImage(file);
+                    alert("Name: " + file.name + "\n" + "Last Modified Date :" + file.lastModifiedDate);
+                }
+                else {
+                    getAsText(file);
+                    alert("Name: " + file.name + "\n" + "Last Modified Date :" + file.lastModifiedDate);
+                }
+            }
+
+        }
+
+        function getAsImage(readFile) {
+            var reader = new FileReader();
+            reader.readAsDataURL(readFile);
+            reader.onload = postImg;
+
+        }
+        function postImg(evt){
+
+     var data ={content:0, test:3}
+            data.content = 'hi';
+            data.test='salam';
+            $.ajax({
+                type: "POST",
+                url: "http://54.169.175.114/chbox/rest/user/hello",
+                data: JSON.stringify(evt.target.result),
+                success: function (r) {
+                    alert("sent1")
+                    if (r.Status == true) {
+                        alert("sent2")
+
+                        InitJson = r;
+                    } else {
+                        Methods.Console.log(r.Error);
+                        InitJson = false;
+                    }
+                }
+            })
+
+        }
+        function addImg(imgsrc) {
+            var img = document.createElement('img');
+            img.setAttribute("src", imgsrc.target.result);
+            document.getElementById("op").insertBefore(img);
+        }
+    </script>
+</head>
+<body>
+<input value="send" type="file" id="file" name="file" onchange="startRead()">
+</body>
+</html>
