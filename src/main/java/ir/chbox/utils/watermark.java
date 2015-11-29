@@ -65,7 +65,7 @@ public class watermark {
 
         // add a viewer to the writer, to see media modified media
 
-        writer.addListener(ToolFactory.makeViewer());
+//        writer.addListener(ToolFactory.makeViewer());
 
         // read and decode packets from the source file and
         // then encode and write out data to the output file

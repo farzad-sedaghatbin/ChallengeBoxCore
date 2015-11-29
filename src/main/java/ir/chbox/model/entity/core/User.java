@@ -18,7 +18,7 @@ import java.util.Set;
         ),
         @NamedQuery(
                 name = "User.findById",
-                query = "select u from User u where u.id=:id" ),
+                query = "select u from User u where u.id=:id"),
         @NamedQuery(
                 name = "User.findByUsername",
                 query = "select u from User u where u.username=:username"
@@ -43,13 +43,13 @@ public class User implements Serializable {
     private String password;
 
     @Column(name = "enable")
-    private boolean enable=true;
+    private boolean enable = true;
 
     @Column(name = "DELETED")
-    protected boolean deleted=false;
+    protected boolean deleted = false;
 
     @Column(name = "STATUS")
-    protected String status="ACTIVE";
+    protected String status = "ACTIVE";
 
     @Column(name = "failedLoginCount")
     private String failedLoginCount;
@@ -66,15 +66,17 @@ public class User implements Serializable {
 
     private String email;
 
-    private long picture;
+    private String activationCode;
+
+    private boolean activated = false;
+    @Lob
+    private byte[] picture;
 
     @OneToMany(mappedBy = "user")
     private Set<Notification> notifications;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<User> freinds;
-
-
 
 
     public String getLastLoginIP() {
@@ -190,13 +192,6 @@ public class User implements Serializable {
         Locale = locale;
     }
 
-    public long getPicture() {
-        return picture;
-    }
-
-    public void setPicture(long picture) {
-        this.picture = picture;
-    }
 
     public Set<User> getFreinds() {
         return freinds;
@@ -212,5 +207,29 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 }
