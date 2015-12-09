@@ -19,7 +19,6 @@ public class ServiceManagementModule {
     @POST
     @Path("/receivePicture")
     public Response receivePicture(String s) {
-        boolean picture = true;
         byte[] data = Base64.decodeBase64(s.substring(24, s.length() - 1));
         BufferedImage b = ImageUtils.convertByteArrayToBufferedImage(data);
         float scaleRatio = ImageUtils.calculateScaleRatio(b.getWidth(), 768);//todo from properties
@@ -31,7 +30,7 @@ public class ServiceManagementModule {
                 e.printStackTrace();
             }
         }
-        new S3Service().doSave(data);
+        new S3Service().doSave(data,".jpg");
         String result = "<h1>A test File saved in the bucket</h1>";
         return Response.status(200).entity(result).build();
     }
@@ -40,8 +39,8 @@ public class ServiceManagementModule {
     @Path("/receiveVideo")
     public Response receiveVideo(String s) {
         byte[] data = Base64.decodeBase64(s.substring(24, s.length() - 1));
-        MediaConvertor.Convert(data);
-        new S3Service().doSave(data);
+       data= MediaConvertor.Convert(data);
+        new S3Service().doSave(data,".mp4");
         String result = "<h1>A test File saved in the bucket</h1>";
         return Response.status(200).entity(result).build();
     }

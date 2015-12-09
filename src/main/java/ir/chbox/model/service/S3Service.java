@@ -22,7 +22,7 @@ public class S3Service {
        * credential profile by reading from the credentials file located at
        * (~/.aws/credentials).
        */
-    public void doSave(byte[] data){
+    public void doSave(byte[] data,String post){
     AWSCredentials credentials = null;
     try {
         credentials = new BasicAWSCredentials("AKIAJPVKSZJALTE5ICKQ","iz4WTjzloTspXC158NYhkgKQPsPjrQRY/PTFCApt");
@@ -39,7 +39,7 @@ public class S3Service {
     s3.setRegion(usWest2);
 
     String bucketName = "my-first-s3-bucket-" + UUID.randomUUID();
-    String key = UUID.randomUUID()+".jpeg";
+    String key = UUID.randomUUID()+post;
 
     System.out.println("===========================================");
     System.out.println("Getting Started with Amazon S3");
@@ -60,11 +60,11 @@ public class S3Service {
             /*
              * List the buckets in your account
              */
-        System.out.println("Listing buckets");
-        for (Bucket bucket : s3.listBuckets()) {
-            System.out.println(" - " + bucket.getName());
-        }
-        System.out.println();
+//        System.out.println("Listing buckets");
+//        for (Bucket bucket : s3.listBuckets()) {
+//            System.out.println(" - " + bucket.getName());
+//        }
+//        System.out.println();
 
             /*
              * Upload an object to your bucket - You can easily upload a file to

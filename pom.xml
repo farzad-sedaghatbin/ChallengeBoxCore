@@ -59,6 +59,7 @@
         </dependency>
 
         <dependency>
+            <scope>compile</scope>
             <groupId>xuggle</groupId>
             <artifactId>xuggle-xuggler</artifactId>
             <version>5.2</version>
