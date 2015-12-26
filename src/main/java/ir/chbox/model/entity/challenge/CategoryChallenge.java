@@ -1,6 +1,8 @@
 package ir.chbox.model.entity.challenge;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -8,15 +10,14 @@ import java.util.Set;
  */
 @Entity
 @Table
-public class Category {
-
+public class CategoryChallenge implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private String id;
 
     private String title;
-    @OneToMany(mappedBy = "category")
-    private Set<ChallengeBase> challengeBases;
 
-    @Id
+
     public String getId() {
         return id;
     }
@@ -33,11 +34,4 @@ public class Category {
         this.title = title;
     }
 
-    public Set<ChallengeBase> getChallengeBases() {
-        return challengeBases;
-    }
-
-    public void setChallengeBases(Set<ChallengeBase> challengeBases) {
-        this.challengeBases = challengeBases;
-    }
 }

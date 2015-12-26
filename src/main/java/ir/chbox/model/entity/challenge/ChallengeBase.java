@@ -26,14 +26,19 @@ public abstract class ChallengeBase implements Serializable {
 
     protected String rating;
 
-    protected long stream;
+    protected String stream;
+    protected String thumbnail;
 
     @OneToMany
     protected Set<Comment> comments;
     @OneToOne
     protected User user;
     @ManyToOne
-    protected Category category;
+    protected CategoryChallenge categoryChallenge;
+    @Transient
+    protected String type;
+    @Transient
+    protected  String userId;
 
 
     public long getId() {
@@ -60,11 +65,11 @@ public abstract class ChallengeBase implements Serializable {
         this.description = description;
     }
 
-    public long getStream() {
+    public String getStream() {
         return stream;
     }
 
-    public void setStream(long stream) {
+    public void setStream(String stream) {
         this.stream = stream;
     }
 
@@ -92,11 +97,43 @@ public abstract class ChallengeBase implements Serializable {
         this.user = user;
     }
 
-    public Category getCategory() {
-        return category;
+    public CategoryChallenge getCategory() {
+        return categoryChallenge;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(CategoryChallenge category) {
+        this.categoryChallenge = category;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public CategoryChallenge getCategoryChallenge() {
+        return categoryChallenge;
+    }
+
+    public void setCategoryChallenge(CategoryChallenge categoryChallenge) {
+        this.categoryChallenge = categoryChallenge;
     }
 }

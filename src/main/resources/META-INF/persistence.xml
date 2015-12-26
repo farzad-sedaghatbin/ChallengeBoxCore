@@ -7,7 +7,7 @@
         <class>ir.chbox.model.entity.core.User</class>
         <class>ir.chbox.model.entity.challenge.ChallengeDescriptor</class>
         <class>ir.chbox.model.entity.challenge.ChallengeInstance</class>
-        <class>ir.chbox.model.entity.challenge.Category</class>
+        <class>ir.chbox.model.entity.challenge.CategoryChallenge</class>
         <properties>
             <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.ClientDriver"/>
             <property name="hibernate.connection.url" value="jdbc:derby://localhost:1527/datbase/cb;create=true"/>

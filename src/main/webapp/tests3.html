@@ -33,7 +33,7 @@
             data.test='salam';
             $.ajax({
                 type: "POST",
-                url: "http://default-environment-f3czyqxdm2.elasticbeanstalk.com/rest/service/receivePicture",
+                url: "http://127.0.0.1:8080/rest/service/receivePicture",
                 data: JSON.stringify(evt.target.result),
                 success: function (r) {
                     alert("sent1")
