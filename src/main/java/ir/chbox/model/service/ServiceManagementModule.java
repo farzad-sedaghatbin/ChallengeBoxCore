@@ -23,7 +23,6 @@ import javax.ws.rs.core.Response;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -81,11 +80,14 @@ public class ServiceManagementModule {
     public Response newChallenge(MultipartFormDataInput input) {
         Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
         List<InputPart> inputParts = uploadForm.get("Archivefile");
-        String UPLOADED_FILE_PATH = "d:\\";
+        String UPLOADED_FILE_PATH = "/home/farzad";
+        String title;
+        String description = "";
         try {
-            String title = new String(uploadForm.get("username").get(0).getBody(String.class, null).getBytes(),"UTF-8");
+             title = new String(uploadForm.get("username").get(0).getBody(String.class, null).getBytes("us-ascii"), "UTF-8");
+
             String category = uploadForm.get("Type").get(0).getBody(String.class, null);
-            String description = uploadForm.get("descriptin").get(0).getBody(String.class, null);
+            description = uploadForm.get("descriptin").get(0).getBody(String.class, null);
             System.out.println(title);
 
             for (InputPart inputPart : inputParts) {
@@ -104,12 +106,12 @@ public class ServiceManagementModule {
 
 
                 System.out.println("Done");
-                ChallengeDescriptor challengeDescriptor = new ChallengeDescriptor();
-                challengeDescriptor.setTitle(title);
-                challengeDescriptor.setDescription(description);
-                challengeDescriptor.setType(category);
-                challengeDescriptor.setStream(fileName);
-                ChallengeDescriptorService.getInstance().create(challengeDescriptor);
+//                ChallengeDescriptor challengeDescriptor = new ChallengeDescriptor();
+//                challengeDescriptor.setTitle(title);
+//                challengeDescriptor.setDescription(description);
+//                challengeDescriptor.setType(category);
+//                challengeDescriptor.setStream(fileName);
+//                ChallengeDescriptorService.getInstance().create(challengeDescriptor);
 
             }
         } catch (IOException e) {
@@ -128,7 +130,7 @@ public class ServiceManagementModule {
 //            }
 //        }
 //        new S3Service().doSave(data,".jpg");
-        String result = "<h1>A test File saved in the bucket</h1>";
+        String result= "" + description;
         return Response.status(200).entity(result).build();
     }
 
