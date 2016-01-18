@@ -17,16 +17,16 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Path("/service")
 public class ServiceManagementModule {
@@ -47,20 +47,22 @@ public class ServiceManagementModule {
         List<Tab> tabs = new ArrayList<>();
         Holder holder = new Holder(true, "", tabs);
         List<Item> items = new ArrayList<>();
-        Tab tab1 = new Tab(1l, "Stream", items);
+//        Tab tab1 = new Tab(1l, "Stream", items);
         List<Item> items2 = new ArrayList<>();
         List<ChallengeDescriptor> descriptors = ChallengeDescriptorService.getInstance().getTop();
         for (ChallengeDescriptor descriptor : descriptors) {
             Item item = new Item();
+            item.setId(descriptor.getId());
             item.setDescription(descriptor.getDescription());
             item.setName(descriptor.getTitle());
             item.setRating(descriptor.getRating());
-            item.setImg(descriptor.getThumbnail());
+            item.setImg("https://s3.eu-central-1.amazonaws.com/challengebox/a.jpg");
             items2.add(item);
         }
+        Tab tab1 = new Tab(1l, "Stream", items2);
         Tab tab2 = new Tab(2l, "Challenge", items2);
         List<Item> items3 = new ArrayList<>();
-        Tab tab3 = new Tab(3l, "Users", items3);
+        Tab tab3 = new Tab(3l, "Users", items2);
         tabs.add(tab1);
         tabs.add(tab2);
         tabs.add(tab3);
@@ -77,15 +79,21 @@ public class ServiceManagementModule {
     @POST
     @Path("/newChallenge")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response newChallenge(@FormDataParam("username") String username, @FormDataParam("Type") String Type, @FormDataParam("descriptin") String descriptin, @FormDataParam("Archivefile") InputStream fileInputStream,
+    public Response newChallenge(@FormDataParam("title") String title, @FormDataParam("Type") String Type, @FormDataParam("description") String description, @FormDataParam("Archivefile") InputStream fileInputStream,
                                  @FormDataParam("Archivefile") FormDataContentDisposition fileMetaData) {
 
         System.out.println("Done");
         ChallengeDescriptor challengeDescriptor = new ChallengeDescriptor();
-        challengeDescriptor.setTitle(username);
-        challengeDescriptor.setDescription(descriptin);
+        challengeDescriptor.setTitle(title);
+        challengeDescriptor.setDescription(description);
         challengeDescriptor.setType(Type);
-        challengeDescriptor.setStream("");
+        challengeDescriptor.setStream(fileMetaData.getFileName());
+        try {
+            java.nio.file.Path p = Files.createFile(Paths.get("/home/farzad/Documents/s3/" + fileMetaData.getFileName()));
+            Files.write(p, IOUtils.toByteArray(fileInputStream));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ChallengeDescriptorService.getInstance().create(challengeDescriptor);
 
 //            }
@@ -102,7 +110,7 @@ public class ServiceManagementModule {
 //            }
 //        }
 //        new S3Service().doSave(data,".jpg");
-        String result = "" + descriptin;
+        String result = "" + description;
         return Response.status(200).entity(result).build();
     }
 
