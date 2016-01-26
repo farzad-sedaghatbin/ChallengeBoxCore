@@ -231,4 +231,13 @@ public class ServiceManagementModule {
         }
         return null;
     }
+
+    @POST
+    @Path("/signup")
+    @Consumes("x-www-form-urlencoded")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response signup() {
+        System.out.println("sign up");
+        return null;
+    }
 }
