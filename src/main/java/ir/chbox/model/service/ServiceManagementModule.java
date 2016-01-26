@@ -231,12 +231,10 @@ public class ServiceManagementModule {
         }
         return null;
     }
-
     @POST
     @Path("/signup")
-    @Consumes("x-www-form-urlencoded")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response signup() {
+    public Response signup(@FormDataParam("name") String name, @FormDataParam("lastname") String lastname, @FormDataParam("email") String email ,@FormDataParam("password") String password,@FormDataParam("username") String username) {
         System.out.println("sign up");
         return null;
     }
