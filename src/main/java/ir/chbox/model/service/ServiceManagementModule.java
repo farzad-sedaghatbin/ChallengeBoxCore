@@ -235,7 +235,54 @@ public class ServiceManagementModule {
     @Path("/signup")
     @Produces(MediaType.APPLICATION_JSON)
     public Response signup(@FormDataParam("name") String name, @FormDataParam("lastname") String lastname, @FormDataParam("email") String email ,@FormDataParam("password") String password,@FormDataParam("username") String username) {
-        System.out.println("sign up");
+        System.out.println("sign up"+name);
+        try {
+            User entity = new User();
+            entity.setFirstname(name);
+            entity.setPassword(password);
+            entity.setUsername(username);
+            entity.setLastname(lastname);
+
+            new UserDAOImpl().create(entity);
+            String result = "<h1>RESTful Demo Application</h1>In real world application, a collection of users will be returned !!";
+            return Response.status(200).entity(result).build();
+        } catch (Exception e) {
+            System.out.println("null");
+        }
+        return null;
+    }
+
+
+    @POST
+    @Path("/checkuser")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkUser(@FormDataParam("password") String password,@FormDataParam("username") String username) {
+        System.out.println("sign in"+username);
+        try {
+            User entity = new User();
+            entity.setPassword(password);
+            entity.setUsername(username);
+            if(new UserDAOImpl().exist(username)){
+                System.out.println("user exist");
+
+                User user = new UserDAOImpl().authenticate(username,password);
+                if(user!=null){
+                    System.out.println("pass ok");
+                    String result = "<h1>RESTful Demo Application</h1>"+user.getFirstname()+","+user.getLastname();
+                    return Response.status(200).entity(result).build();
+
+                }
+                System.out.println("pass fail");
+            }
+            System.out.println("user not exist");
+            String result = "<h1>RESTful Demo Application</h1> login faild";
+            return Response.status(200).entity(result).build();
+
+
+
+        } catch (Exception e) {
+            System.out.println("null");
+        }
         return null;
     }
 }
