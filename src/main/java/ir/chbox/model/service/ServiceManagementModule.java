@@ -1,6 +1,5 @@
 package ir.chbox.model.service;
 
-import com.amazonaws.util.IOUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.chbox.model.dao.UserDAOImpl;
@@ -16,11 +15,13 @@ import org.apache.commons.codec.binary.Base64;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import javax.imageio.ImageIO;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -79,22 +80,56 @@ public class ServiceManagementModule {
     @POST
     @Path("/newChallenge")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response newChallenge(@FormDataParam("title") String title, @FormDataParam("Type") String Type, @FormDataParam("description") String description, @FormDataParam("Archivefile") InputStream fileInputStream,
+    public Response newChallenge(@FormDataParam("title") String title, @FormDataParam("Type") String Type, @FormDataParam("fileType") String fileType, @FormDataParam("description") String description, @FormDataParam("Archivefile") InputStream fileInputStream,
                                  @FormDataParam("Archivefile") FormDataContentDisposition fileMetaData) {
 
-        System.out.println("Done");
+        System.out.println("start");
         ChallengeDescriptor challengeDescriptor = new ChallengeDescriptor();
         challengeDescriptor.setTitle(title);
         challengeDescriptor.setDescription(description);
         challengeDescriptor.setType(Type);
         challengeDescriptor.setStream(fileMetaData.getFileName());
-        try {
-            java.nio.file.Path p = Files.createFile(Paths.get("/home/farzad/Documents/s3/" + fileMetaData.getFileName()));
-            Files.write(p, IOUtils.toByteArray(fileInputStream));
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (fileType.contains("video/mp4")) {
+//            VideoUtils videoUtils = new VideoUtils();
+//            videoUtils.sizeDetector(fileInputStream);
+//            if (videoUtils.getWidth() > 320 || videoUtils.getHeight() > 240) {
+                MediaConvertor m = new MediaConvertor();
+                byte[] output = m.Convert(fileInputStream);
+                java.nio.file.Path p = null;
+                try {
+                    ImageIO.write(m.getThumbnail(), "jpg", new File("/home/farzad/Documents/s3/thumbnail.jpg"));
+
+                    p = Files.createFile(Paths.get("/home/farzad/Documents/s3/" + fileMetaData.getFileName()));
+                    Files.write(p, output);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//            } else {
+//                byte[] fileBytes = new byte[0];
+//                try {
+//                    fileBytes = IOUtils.toByteArray(fileInputStream);
+//                    File f = File.createTempFile(new Date().toString(), ".mp4");
+//                    FileOutputStream write = new FileOutputStream(f);
+//                    write.write(fileBytes);
+//                    write.close();
+//                    f = new Watermark().doWatermark(f);
+//                    java.nio.file.Path p = null;
+//                    try {
+//                        p = Files.createFile(Paths.get("/home/farzad/Documents/s3/" + fileMetaData.getFileName()));
+//                        Files.write(p, Files.readAllBytes(Paths.get(f.toURI())));
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    f.delete();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+            System.out.println("end");
         }
-        ChallengeDescriptorService.getInstance().create(challengeDescriptor);
+
+//        ChallengeDescriptorService.getInstance().create(challengeDescriptor);
 
 //            }
 
@@ -153,7 +188,7 @@ public class ServiceManagementModule {
     @Path("/receiveVideo")
     public Response receiveVideo(String s) {
         byte[] data = Base64.decodeBase64(s.substring(24, s.length() - 1));
-        data = MediaConvertor.Convert(data);
+//        data = MediaConvertor.Convert(data);
         new S3Service().doSave(data, ".mp4");
         String result = "<h1>A test File saved in the bucket</h1>";
         return Response.status(200).entity(result).build();
@@ -231,6 +266,7 @@ public class ServiceManagementModule {
         }
         return null;
     }
+
     @POST
     @Path("/signup")
     @Produces(MediaType.APPLICATION_JSON)
