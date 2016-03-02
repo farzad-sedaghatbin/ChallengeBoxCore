@@ -1,9 +1,7 @@
 package ir.chbox.model.entity.challenge;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by farzad on 8/22/15.
@@ -19,6 +17,27 @@ import javax.persistence.Table;
 public class ChallengeDescriptor extends ChallengeBase {
 
     private boolean privateChallenge = false;
+
+    @Column(name = "description")
+    private String description;
+    @ManyToMany
+    private Set<CategoryChallenge> categoryChallenges;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<CategoryChallenge> getCategoryChallenges() {
+        return categoryChallenges;
+    }
+
+    public void setCategoryChallenges(Set<CategoryChallenge> categoryChallenges) {
+        this.categoryChallenges = categoryChallenges;
+    }
 
     public boolean isPrivateChallenge() {
         return privateChallenge;

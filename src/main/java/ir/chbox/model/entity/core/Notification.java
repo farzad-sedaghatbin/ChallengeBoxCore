@@ -13,9 +13,11 @@ public class Notification implements Serializable{
     @GeneratedValue
     @Column(name = "id")
     private long id;
-
+    @Column
     private String description;
-
+    @Column
+    private String type;
+    @Column
     private boolean read=false;
 
     @ManyToOne
@@ -52,5 +54,13 @@ public class Notification implements Serializable{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

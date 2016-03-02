@@ -14,7 +14,7 @@ public class UserDAOImpl extends BaseDAOImpl<User> {
         try {
             List<User> user = (List<User>) em.createNamedQuery("User.exist")
                     .setParameter("username", username)
-                    .setParameter("deleted", "0")
+                    .setParameter("deleted", false)
                     .getResultList();
             if (user.size() != 0)
                 return true;

@@ -1,5 +1,7 @@
 package ir.chbox.model.entity.core;
 
+import ir.chbox.model.entity.challenge.ChallengeDescriptor;
+import ir.chbox.model.entity.challenge.ChallengeInstance;
 import ir.chbox.model.entity.core.Notification;
 
 import javax.persistence.*;
@@ -14,11 +16,14 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(
                 name = "User.findByUsernameAndPassword",
-                query = "select u from User u where u.username=:username and u.password=:password and u.deleted='0'"
+                query = "select u from User u where u.username=:username and u.password=:password and u.deleted=false "
         ),
         @NamedQuery(
                 name = "User.findById",
                 query = "select u from User u where u.id=:id"),
+        @NamedQuery(
+                name = "User.exist",
+                query = "select u from User u where u.username=:username and u.deleted=:deleted"),
         @NamedQuery(
                 name = "User.findByUsername",
                 query = "select u from User u where u.username=:username"
@@ -59,17 +64,26 @@ public class User implements Serializable {
 
     @Column(name = "lastLoginIP")
     private String lastLoginIP;
-
+    @Column
     private String mobileNumber;
-
-    private String Locale;
-
+    @Column
+    private String locale;
+    @Column
+    private String location;
+    @Column
     private String email;
-
+    @Column
+    private float rating;
+    @Column
+    private String mobile;
+    @Column
     private String activationCode;
-
+    @Column
+    private String passwordStatus;
+    @Column
     private boolean activated = false;
     @Lob
+    @Column
     private byte[] picture;
 
     @OneToMany(mappedBy = "user")
@@ -77,6 +91,14 @@ public class User implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<User> freinds;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<User> pendingUser;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<ChallengeInstance> doChallenge;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<ChallengeDescriptor> followChallenge;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<ChallengeDescriptor> createChallenge;
 
 
     public String getLastLoginIP() {
@@ -185,11 +207,11 @@ public class User implements Serializable {
     }
 
     public String getLocale() {
-        return Locale;
+        return locale;
     }
 
     public void setLocale(String locale) {
-        Locale = locale;
+        locale = locale;
     }
 
 
@@ -231,5 +253,69 @@ public class User implements Serializable {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getPasswordStatus() {
+        return passwordStatus;
+    }
+
+    public void setPasswordStatus(String passwordStatus) {
+        this.passwordStatus = passwordStatus;
+    }
+
+    public Set<User> getPendingUser() {
+        return pendingUser;
+    }
+
+    public void setPendingUser(Set<User> pendingUser) {
+        this.pendingUser = pendingUser;
+    }
+
+    public Set<ChallengeInstance> getDoChallenge() {
+        return doChallenge;
+    }
+
+    public void setDoChallenge(Set<ChallengeInstance> doChallenge) {
+        this.doChallenge = doChallenge;
+    }
+
+    public Set<ChallengeDescriptor> getFollowChallenge() {
+        return followChallenge;
+    }
+
+    public void setFollowChallenge(Set<ChallengeDescriptor> followChallenge) {
+        this.followChallenge = followChallenge;
+    }
+
+    public Set<ChallengeDescriptor> getCreateChallenge() {
+        return createChallenge;
+    }
+
+    public void setCreateChallenge(Set<ChallengeDescriptor> createChallenge) {
+        this.createChallenge = createChallenge;
     }
 }

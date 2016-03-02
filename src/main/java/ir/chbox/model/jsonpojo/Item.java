@@ -1,14 +1,10 @@
 package ir.chbox.model.jsonpojo;
 
+import com.fasterxml.jackson.annotation.*;
+
+import javax.annotation.Generated;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
@@ -29,7 +25,7 @@ private String name;
 @JsonProperty("description")
 private String description;
 @JsonProperty("rating")
-private String rating;
+private float rating;
 @JsonProperty("cost")
 private String cost;
 @JsonProperty("img")
@@ -53,7 +49,7 @@ public Item() {
 * @param rating
 * @param cost
 */
-public Item(long id, String name, String description, String rating, String cost, String img) {
+public Item(long id, String name, String description, float rating, String cost, String img) {
 this.id = id;
 this.name = name;
 this.description = description;
@@ -128,7 +124,7 @@ this.description = description;
 * The rating
 */
 @JsonProperty("rating")
-public String getRating() {
+public float getRating() {
 return rating;
 }
 
@@ -138,7 +134,7 @@ return rating;
 * The rating
 */
 @JsonProperty("rating")
-public void setRating(String rating) {
+public void setRating(float rating) {
 this.rating = rating;
 }
 

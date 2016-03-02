@@ -149,6 +149,16 @@ public class ServiceManagementModule {
         return Response.status(200).entity(result).build();
     }
 
+    @POST
+    @Path("/getStream")
+
+    public Response newChallenge(@FormDataParam("id") String id) {
+
+        System.out.println("start");
+
+        return Response.status(200).entity("").build();
+    }
+
     private String getFileName(MultivaluedMap<String, String> header) {
 
         String[] contentDisposition = header.getFirst("Content-Disposition").split(";");
@@ -269,7 +279,6 @@ public class ServiceManagementModule {
 
     @POST
     @Path("/signup")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response signup(@FormDataParam("name") String name, @FormDataParam("lastname") String lastname, @FormDataParam("email") String email ,@FormDataParam("password") String password,@FormDataParam("username") String username) {
         System.out.println("sign up"+name);
         try {
@@ -278,6 +287,7 @@ public class ServiceManagementModule {
             entity.setPassword(password);
             entity.setUsername(username);
             entity.setLastname(lastname);
+            entity.setEmail(email);
 
             new UserDAOImpl().create(entity);
             String result = "<h1>RESTful Demo Application</h1>In real world application, a collection of users will be returned !!";
@@ -291,8 +301,7 @@ public class ServiceManagementModule {
 
     @POST
     @Path("/checkuser")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response checkUser(@FormDataParam("password") String password,@FormDataParam("username") String username) {
+   public Response checkUser(@FormDataParam("password") String password,@FormDataParam("username") String username) {
         System.out.println("sign in"+username);
         try {
             User entity = new User();

@@ -17,7 +17,7 @@ public class ChallengeDescriptorService {
     }
 
     public void create(ChallengeDescriptor challengeDescriptor) {
-        challengeDescriptor.setRating("0");
+        challengeDescriptor.setRating(0);
         new ChallengeDescriptorDAOImpl<>().create(challengeDescriptor);
     }
 

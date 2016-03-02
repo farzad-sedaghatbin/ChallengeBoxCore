@@ -5,6 +5,7 @@ import ir.chbox.model.entity.core.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Set;
 
 /**
@@ -20,14 +21,18 @@ public abstract class ChallengeBase implements Serializable {
 
     @Column(name = "title")
     protected String title;
-
-    @Column(name = "description")
-    protected String description;
-
-    protected String rating;
-
+    @Column
+    protected float rating;
+    @Column
+    protected LocalTime createTime;
+    @Column
+    protected LocalTime expireTime;
+    @Column
     protected String stream;
+    @Column
     protected String thumbnail;
+    @Column
+    protected String mediaType;
 
     @OneToMany
     protected Set<Comment> comments;
@@ -38,7 +43,7 @@ public abstract class ChallengeBase implements Serializable {
     @Transient
     protected String type;
     @Transient
-    protected  String userId;
+    protected String userId;
 
 
     public long getId() {
@@ -57,13 +62,6 @@ public abstract class ChallengeBase implements Serializable {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String getStream() {
         return stream;
@@ -73,12 +71,8 @@ public abstract class ChallengeBase implements Serializable {
         this.stream = stream;
     }
 
-    public String getRating() {
+    public float getRating() {
         return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
     }
 
     public Set<Comment> getComments() {
@@ -135,5 +129,33 @@ public abstract class ChallengeBase implements Serializable {
 
     public void setCategoryChallenge(CategoryChallenge categoryChallenge) {
         this.categoryChallenge = categoryChallenge;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public LocalTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public LocalTime getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(LocalTime expireTime) {
+        this.expireTime = expireTime;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
     }
 }

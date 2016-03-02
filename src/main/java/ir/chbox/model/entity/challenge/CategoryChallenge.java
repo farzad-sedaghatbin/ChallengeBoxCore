@@ -2,8 +2,6 @@ package ir.chbox.model.entity.challenge;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by farzad on 8/22/15.
@@ -14,8 +12,10 @@ public class CategoryChallenge implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private String id;
-
+    @Column
     private String title;
+    @Column
+    private String description;
 
 
     public String getId() {
@@ -34,4 +34,11 @@ public class CategoryChallenge implements Serializable {
         this.title = title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
